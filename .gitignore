@@ -30,3 +30,6 @@
 *.exe
 *.out
 *.app
+/build-win-arm64
+/build-win-x64
+/build-win-x86

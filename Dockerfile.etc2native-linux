@@ -1,0 +1,40 @@
+# Reproducible build environment for build_etc2native_linux.sh
+# Produces: libetc2native.so for Linux x64, arm64 and riscv64.
+#
+# Toolchains baked in:
+#   x64     : host gcc/g++ (native, no cross toolchain)
+#   arm64   : aarch64-linux-gnu-gcc / g++   (gcc-aarch64-linux-gnu)
+#   riscv64 : riscv64-linux-gnu-gcc / g++   (gcc-riscv64-linux-gnu)
+#
+# etc2comp is pure C++ (no x86 SIMD), so cross builds need nothing special.
+# The fork is cloned fresh BY THE SCRIPT on every run; only host tools live here.
+#
+#   Build the image:  docker build --platform=linux/amd64 -f Dockerfile.etc2native-linux -t etc2native-linux .
+#   Run the build:    docker run --rm --platform=linux/amd64 \
+#                        -v "$PWD/out:/work/prebuilt_linux_etc2native" etc2native-linux
+#   (output: ./out/{x64,arm64,riscv64}/libetc2native.so)
+
+FROM --platform=linux/amd64 ubuntu:24.04
+
+ENV DEBIAN_FRONTEND=noninteractive
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    build-essential \
+    cmake \
+    ninja-build \
+    gcc-aarch64-linux-gnu \
+    g++-aarch64-linux-gnu \
+    gcc-riscv64-linux-gnu \
+    g++-riscv64-linux-gnu \
+    git \
+    ca-certificates \
+ && apt-get clean \
+ && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /work
+
+COPY build_etc2native_linux.sh /work/build_etc2native_linux.sh
+COPY etc2native/               /work/etc2native/
+RUN chmod +x /work/build_etc2native_linux.sh
+
+CMD ["sh", "/work/build_etc2native_linux.sh"]

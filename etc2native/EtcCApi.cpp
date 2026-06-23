@@ -58,6 +58,6 @@ ETC2_API int etc2_encode_rgba8(const uint8_t* rgba, int width, int height,
 }
 
 ETC2_API void etc2_free(uint8_t* p) { delete[] p; }
-ETC2_API const char* etc2_version(void) { return "etc2native-1.1"; }
+ETC2_API const char* etc2_version(void) { return "etc2native-1.0"; }
 
 }

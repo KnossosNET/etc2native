@@ -1,0 +1,29 @@
+# etc2native build images.
+#
+#   docker compose -f compose.etc2native.yaml build
+#   docker compose -f compose.etc2native.yaml run --rm etc2native-android  # -> ./prebuilt_android_etc2native/
+#   docker compose -f compose.etc2native.yaml run --rm etc2native-linux    # -> ./prebuilt_linux_etc2native/
+
+services:
+
+  etc2native-android:
+    image: etc2native_android
+    build:
+      context: .
+      dockerfile: Dockerfile.etc2native-android
+    platform: linux/amd64
+    working_dir: /work
+    volumes:
+      - .:/work
+    command: ["sh", "/work/build_etc2native_android.sh"]
+
+  etc2native-linux:
+    image: etc2native_linux
+    build:
+      context: .
+      dockerfile: Dockerfile.etc2native-linux
+    platform: linux/amd64
+    working_dir: /work
+    volumes:
+      - .:/work
+    command: ["sh", "/work/build_etc2native_linux.sh"]
