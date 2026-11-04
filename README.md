@@ -18,6 +18,7 @@ etc2native/
 build_etc2native_windows.cmd     <- Windows  x64 / x86 / arm64
 build_etc2native_linux.sh        <- Linux    x64 / arm64 / riscv64
 build_etc2native_android.sh      <- Android  arm64-v8a / armeabi-v7a / x86 / x86_64
+build_etc2native_macos.sh        <- macOS    Universal (arm64 + x64)
 Dockerfile.etc2native-linux
 Dockerfile.etc2native-android
 compose.etc2native.yaml
@@ -45,6 +46,12 @@ Needs VS 2022 Desktop C++ **plus the ARM64 build tools** (Individual Components 
 ```
 docker compose -f compose.etc2native.yaml run --rm etc2native-linux
 # -> prebuilt_linux_etc2native/{x64,arm64,riscv64}/libetc2native.so
+```
+
+## macOS
+```
+sh ./build_etc2native_macos.sh
+:: -> prebuilt_macos_etc2native/universal/libetc2native.dylib
 ```
 
 ## Android (Docker)
